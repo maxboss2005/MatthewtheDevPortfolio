@@ -104,19 +104,23 @@
             border-radius: 10px;
             margin: 40px 0;
             overflow: hidden;
+            position: relative;
         }
         
         .progress-bar {
             height: 10px;
-            width: 65%;
+            width: 0%;
             background: linear-gradient(to right, #4facfe, #00f2fe);
             border-radius: 10px;
-            animation: progress 2s ease-in-out;
+            transition: width 0.5s ease;
         }
         
-        @keyframes progress {
-            from { width: 0%; }
-            to { width: 65%; }
+        .progress-percentage {
+            position: absolute;
+            top: -25px;
+            right: 0;
+            font-size: 0.9rem;
+            font-weight: bold;
         }
         
         .contact-info {
@@ -260,7 +264,8 @@
         </p>
         
         <div class="progress-container">
-            <div class="progress-bar"></div>
+            <div class="progress-percentage" id="progressPercentage">0%</div>
+            <div class="progress-bar" id="progressBar"></div>
         </div>
         
         <div class="countdown">
@@ -294,7 +299,6 @@
         </div>
         
         <div class="social-links">
-
             <a href="https://wa.me/2348064353291" class="social-link">
                 <i class="fab fa-whatsapp"></i>
             </a>
@@ -309,11 +313,32 @@
     </footer>
 
     <script>
-        // Countdown Timer
-        function updateCountdown() {
-            const targetDate = new Date('January 1, 2026 00:00:00').getTime();
+        // Set your launch date
+        const launchDate = new Date('January 1, 2026 00:00:00').getTime();
+        // Set your start date (when development began)
+        const startDate = new Date('October 1, 2025 00:00:00').getTime();
+        
+        // Get DOM elements
+        const progressBar = document.getElementById('progressBar');
+        const progressPercentage = document.getElementById('progressPercentage');
+        
+        function updateProgressAndCountdown() {
             const now = new Date().getTime();
-            const timeLeft = targetDate - now;
+            
+            // Calculate progress percentage
+            const totalDuration = launchDate - startDate;
+            const elapsedTime = now - startDate;
+            let progress = (elapsedTime / totalDuration) * 100;
+            
+            // Ensure progress is between 0% and 100%
+            progress = Math.max(0, Math.min(100, progress));
+            
+            // Update progress bar
+            progressBar.style.width = progress + '%';
+            progressPercentage.textContent = Math.round(progress) + '%';
+            
+            // Calculate countdown
+            const timeLeft = launchDate - now;
             
             const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
             const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -325,16 +350,18 @@
             document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
             document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
             
+            // Check if launch date has passed
             if (timeLeft < 0) {
-                clearInterval(countdownInterval);
+                clearInterval(interval);
+                progressBar.style.width = '100%';
+                progressPercentage.textContent = '100%';
                 document.querySelector('.countdown').innerHTML = '<h3>Website Launched!</h3>';
             }
         }
         
-        const countdownInterval = setInterval(updateCountdown, 1000);
-        updateCountdown();
+        // Update every second
+        const interval = setInterval(updateProgressAndCountdown, 1000);
+        updateProgressAndCountdown(); // Initial call
     </script>
 </body>
-
 </html>
-
