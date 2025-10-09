@@ -314,9 +314,9 @@
 
     <script>
         // Set your launch date
-        const launchDate = new Date('October 11, 2025 00:00:00').getTime();
+        const launchDate = new Date('October 10, 2025 09:02:00').getTime();
         // Set your start date (when development began)
-        const startDate = new Date('October 10, 2025 00:00:00').getTime();
+        const startDate = new Date('October 01, 2025 00:00:00').getTime();
         
         // Get DOM elements
         const progressBar = document.getElementById('progressBar');
@@ -355,7 +355,7 @@
                 clearInterval(interval);
                 progressBar.style.width = '100%';
                 progressPercentage.textContent = '100%';
-                document.querySelector('.countdown').innerHTML = '<h3>Website Launched!</h3>';
+                document.querySelector('.countdown').innerHTML = '<h3>Website Launched! Refresh to view the website.</h3>';
             }
         }
         
@@ -365,6 +365,7 @@
     </script>
 </body>
 </html>
+
 
 
 
